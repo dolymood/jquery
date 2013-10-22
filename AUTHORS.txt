@@ -6,10 +6,10 @@ Michael Geary <mike@geary.com>
 Stefan Petre <stefan.petre@gmail.com>
 Yehuda Katz <wycats@gmail.com>
 Corey Jewett <cj@syntheticplayground.com>
-Klaus Hartl <klaus.hartl@googlemail.com>
+Klaus Hartl <klaus.hartl@gmail.com>
 Franck Marcia <franck.marcia@gmail.com>
 Jörn Zaefferer <joern.zaefferer@gmail.com>
-Paul Bakaus <paul.bakaus@googlemail.com>
+Paul Bakaus <paul.bakaus@gmail.com>
 Brandon Aaron <brandon.aaron@gmail.com>
 Mike Alsup <malsup@gmail.com>
 Dave Methvin <dave.methvin@gmail.com>
@@ -31,7 +31,7 @@ Rich Dougherty <rich@rd.gen.nz>
 Kim Dalsgaard <kim@kimdalsgaard.com>
 Andrea Giammarchi <andrea.giammarchi@gmail.com>
 Mark Gibson <jollytoad@gmail.com>
-Karl Swedberg <karl@englishrules.com>
+Karl Swedberg <kswedberg@gmail.com>
 Justin Meyer <justinbmeyer@gmail.com>
 Ben Alman <cowboy@rj3.net>
 James Padolsey <cla@padolsey.net>
@@ -47,7 +47,7 @@ Matt Curry <matt@pseudocoder.com>
 Michael Monteleone <michael@michaelmonteleone.net>
 Noah Sloan <noah.sloan@gmail.com>
 Tom Viner <github@viner.tv>
-Douglas Neiner <doug@pixelgraphics.us>
+Douglas Neiner <doug@dougneiner.com>
 Adam J. Sontag <ajpiano@ajpiano.com>
 Dave Reed <dareed@microsoft.com>
 Ralph Whitbeck <ralph.whitbeck@gmail.com>
@@ -55,7 +55,7 @@ Carl Fürstenberg <azatoth@gmail.com>
 Jacob Wright <jacwright@gmail.com>
 J. Ryan Stinnett <jryans@gmail.com>
 Heungsub Lee <h@subl.ee>
-Colin Snover <colin@alpha.zetafleet.com>
+Colin Snover <github.com@zetafleet.com>
 Ryan W Tenney <ryan@10e.us>
 Ron Otten <r.j.g.otten@gmail.com>
 Jephte Clain <Jephte.Clain@univ-reunion.fr>
@@ -66,7 +66,7 @@ Henri Wiechers <hwiechers@gmail.com>
 Russell Holbrook <russellholbrook@gmail.com>
 Julian Aubourg <aubourg.julian@gmail.com>
 Gianni Alessandro Chiappetta <gianni@runlevel6.org>
-Scott Jehl <scott@scottjehl.com>
+Scott Jehl <scottjehl@gmail.com>
 James Burke <jrburke@gmail.com>
 Jonas Pfenniger <jonas@pfenniger.name>
 Xavi Ramirez <xavi.rmz@gmail.com>
@@ -75,9 +75,9 @@ Sylvester Keil <sylvester@keil.or.at>
 Brandon Sterne <bsterne@mozilla.com>
 Mathias Bynens <mathias@qiwi.be>
 Timmy Willison <timmywillisn@gmail.com>
-Corey Frang <gnarf@gnarf.net>
+Corey Frang <gnarf37@gmail.com>
 Anton Kovalyov <anton@kovalyov.net>
-David Murdoch <musicisair@yahoo.com>
+David Murdoch <david@davidmurdoch.com>
 Josh Varner <josh.varner@gmail.com>
 Charles McNulty <cmcnulty@kznf.com>
 Jordan Boesch <jboesch26@gmail.com>
@@ -131,7 +131,7 @@ Chris Faulkner <thefaulkner@gmail.com>
 Elijah Manor <elijah.manor@gmail.com>
 Daniel Chatfield <chatfielddaniel@gmail.com>
 Nikita Govorov <nikita.govorov@gmail.com>
-Wesley Walser <wwalser@atlassian.com>
+Wesley Walser <waw325@gmail.com>
 Michael Pennisi <mike@mikepennisi.com>
 Markus Staab <markus.staab@redaxo.de>
 Benjamin Truyman <bentruyman@gmail.com>
@@ -147,10 +147,32 @@ Dave Riddle <david@joyvuu.com>
 Greg Lavallee <greglavallee@wapolabs.com>
 Daniel Gálvez <dgalvez@editablething.com>
 Sai Lung Wong <sai.wong@huffingtonpost.com>
-Tom H Fuertes <TomFuertes@gmail.com>
+Tom H Fuertes <tomfuertes@gmail.com>
 Roland Eckl <eckl.roland@googlemail.com>
 Jay Merrifield <fracmak@gmail.com>
 Allen J Schmidt Jr <cobrasoft@gmail.com>
 Marcel Greter <marcel.greter@ocbnet.ch>
 Matthias Jäggli <matthias.jaeggli@gmail.com>
 Yiming He <yiminghe@gmail.com>
+Devin Cooper <cooper.semantics@gmail.com>
+Bennett Sorbo <bsorbo@gmail.com>
+Sebastian Burkhard <sebi.burkhard@gmail.com>
+Danil Somsikov <danilasomsikov@gmail.com>
+Jean Boussier <jean.boussier@gmail.com>
+Adam Coulombe <me@adam.co>
+Andrew Plummer <plummer.andrew@gmail.com>
+Nguyen Phuc Lam <ruado1987@gmail.com>
+Dmitry Gusev <dmitry.gusev@gmail.com>
+Michał Gołębiowski <m.goleb@gmail.com>
+Steven Benner <admin@stevenbenner.com>
+Li Xudong <istonelee@gmail.com>
+Renato Oliveira dos Santos <ros3@cin.ufpe.br>
+Jason Bedard <jason+jquery@jbedard.ca>
+Kyle Robinson Young <kyle@dontkry.com>
+Chris Talkington <chris@talkingtontech.com>
+Jason Merino <jasonmerino@gmail.com>
+Terry Jones <terry@jon.es>
+Jeremy Dunck <jdunck@gmail.com>
+Chris Price <price.c@gmail.com>
+Guy Bedford <guybedford@gmail.com>
+Amey Sakhadeo <me@ameyms.com>

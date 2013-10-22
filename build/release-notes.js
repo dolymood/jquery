@@ -3,23 +3,20 @@
  * jQuery Release Note Generator
  */
 
-var fs = require("fs"),
-	http = require("http"),
-	tmpl = require("mustache"),
-	extract = /<a href="\/ticket\/(\d+)" title="View ticket">(.*?)<[^"]+"component">\s*(\S+)/g;
+var http = require("http"),
+	extract = /<a href="\/ticket\/(\d+)" title="View ticket">(.*?)<[^"]+"component">\s*(\S+)/g,
+	version = process.argv[2];
 
-var opts = {
-	version: "1.8.2",
-	short_version: "1.8.2",
-	final_version: "1.8.2",
-	categories: []
-};
+if ( !/^\d+\.\d+/.test( version ) ) {
+	console.error( "Invalid version number: " + version );
+	process.exit( 1 );
+}
 
 http.request({
 	host: "bugs.jquery.com",
 	port: 80,
 	method: "GET",
-	path: "/query?status=closed&resolution=fixed&max=400&component=!web&order=component&milestone=" + opts.final_version
+	path: "/query?status=closed&resolution=fixed&max=400&component=!web&order=component&milestone=" + version
 }, function (res) {
 	var data = [];
 
@@ -28,27 +25,32 @@ http.request({
 	});
 
 	res.on( "end", function() {
-		var match,
-			file = data.join(""),
-			cur;
+		var match, cur, cat,
+			file = data.join("");
 
 		while ( (match = extract.exec( file )) ) {
 			if ( "#" + match[1] !== match[2] ) {
-				var cat = match[3];
+				cat = match[3];
 
-				if ( !cur || cur.name !== cat ) {
-					cur = { name: match[3], niceName: match[3].replace(/^./, function(a){ return a.toUpperCase(); }), bugs: [] };
-					opts.categories.push( cur );
+				if ( !cur || cur !== cat ) {
+					if ( cur ) {
+						console.log("</ul>");
+					}
+					cur = cat;
+					console.log( "<h3>" + cat.charAt(0).toUpperCase() + cat.slice(1) + "</h3>" );
+					console.log("<ul>");
 				}
 
-				cur.bugs.push({ ticket: match[1], title: match[2] });
+				console.log(
+					"  <li><a href=\"http://bugs.jquery.com/ticket/" + match[1] + "\">#" +
+					match[1] + ": " + match[2] + "</a></li>"
+				);
 			}
 		}
+		if ( cur ) {
+			console.log("</ul>");
+		}
 
-		buildNotes();
 	});
 }).end();
 
-function buildNotes() {
-	console.log( tmpl.to_html( fs.readFileSync("release-notes.txt", "utf8"), opts ) );
-}

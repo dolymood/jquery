@@ -14,25 +14,15 @@ In the spirit of open source software development, jQuery always encourages comm
 What you need to build your own jQuery
 --------------------------------------
 
-In order to build jQuery, you need to have GNU make 3.8 or later, Node.js/npm latest, and git 1.7 or later.
+In order to build jQuery, you need to have Node.js/npm latest and git 1.7 or later.
 (Earlier versions might work OK, but are not tested.)
 
-Windows users have two options:
+For Windows you have to download and install [git](http://git-scm.com/downloads) and [Node.js](http://nodejs.org/download/).
 
-1. Install [msysgit](https://code.google.com/p/msysgit/) (Full installer for official Git),
-   [GNU make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm), and a
-   [binary version of Node.js](http://node-js.prcn.co.cc/). Make sure all three packages are installed to the same
-   location (by default, this is C:\Program Files\Git).
-2. Install [Cygwin](http://cygwin.com/) (make sure you install the git, make, and which packages), then either follow
-   the [Node.js build instructions](https://github.com/ry/node/wiki/Building-node.js-on-Cygwin-%28Windows%29) or install
-   the [binary version of Node.js](http://node-js.prcn.co.cc/).
-
-Mac OS users should install Xcode (comes on your Mac OS install DVD, or downloadable from
-[Apple's Xcode site](http://developer.apple.com/technologies/xcode.html)) and
-[Homebrew](http://mxcl.github.com/homebrew/). Once Homebrew is installed, run `brew install git` to install git,
+Mac OS users should install [Homebrew](http://mxcl.github.com/homebrew/). Once Homebrew is installed, run `brew install git` to install git,
 and `brew install node` to install Node.js.
 
-Linux/BSD users should use their appropriate package managers to install make, git, and node, or build from source
+Linux/BSD users should use their appropriate package managers to install git and Node.js, or build from source
 if you swing that way. Easy-peasy.
 
 
@@ -45,20 +35,24 @@ First, clone a copy of the main jQuery git repo by running:
 git clone git://github.com/jquery/jquery.git
 ```
 
-Enter the directory and install the Node dependencies:
+Install the [grunt-cli](http://gruntjs.com/getting-started#installing-the-cli) and [bower](http://bower.io/) packages if you haven't before. These should be done as global installs:
+
+```bash
+npm install -g grunt-cli bower
+```
+
+Make sure you have `grunt` and `bower` installed by testing:
+
+```bash
+grunt -version
+bower -version
+```
+
+Enter the jquery directory and install the Node and Bower dependencies, this time *without* specifying a global(-g) install:
 
 ```bash
 cd jquery && npm install
 ```
-
-
-Make sure you have `grunt` installed by testing:
-
-```bash
-grunt -version
-```
-
-
 
 Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of jQuery, type the following:
 
@@ -66,93 +60,94 @@ Then, to get a complete, minified (w/ Uglify.js), linted (w/ JSHint) version of 
 grunt
 ```
 
-
-The built version of jQuery will be put in the `dist/` subdirectory.
-
-
-### Modules (new in 1.8)
-
-Starting in jQuery 1.8, special builds can now be created that optionally exclude or include any of the following modules:
-
-- ajax
-- css
-- dimensions
-- effects
-- offset
+The built version of jQuery will be put in the `dist/` subdirectory, along with the minified copy and associated map file.
 
 
-Before creating a custom build for use in production, be sure to check out the latest stable version:
+### Modules
+
+Special builds can be created that exclude subsets of jQuery functionality.
+This allows for smaller custom builds when the builder is certain that those parts of jQuery are not being used.
+For example, an app that only used JSONP for `$.ajax()` and did not need to calculate offsets or positions of elements could exclude the offset and ajax/xhr modules.
+
+Any module may be excluded except for `core`, and `selector`. To exclude a module, pass its path relative to the `src` folder (without the `.js` extension).
+
+Some example modules that can be excluded are:
+
+- **ajax**: All AJAX functionality: `$.ajax()`, `$.get()`, `$.post()`, `$.ajaxSetup()`, `.load()`, transports, and ajax event shorthands such as `.ajaxStart()`.
+- **ajax/xhr**: The XMLHTTPRequest AJAX transport only.
+- **ajax/script**: The `<script>` AJAX transport only; used to retrieve scripts.
+- **ajax/jsonp**: The JSONP AJAX transport only; depends on the ajax/script transport.
+- **css**: The `.css()` method plus non-animated `.show()`, `.hide()` and `.toggle()`. Also removes **all** modules depending on css (including **effects**, **dimensions**, and **offset**).
+- **deprecated**: Methods documented as deprecated but not yet removed; currently only `.andSelf()`.
+- **dimensions**: The `.width()` and `.height()` methods, including `inner-` and `outer-` variations.
+- **effects**: The `.animate()` method and its shorthands such as `.slideUp()` or `.hide("slow")`.
+- **event**: The `.on()` and `.off()` methods and all event functionality. Also removes `event/alias`.
+- **event/alias**: All event attaching/triggering shorthands like `.click()` or `.mouseover()`.
+- **offset**: The `.offset()`, `.position()`, `.offsetParent()`, `.scrollLeft()`, and `.scrollTop()` methods.
+- **wrap**: The `.wrap()`, `.wrapAll()`, `.wrapInner()`, and `.unwrap()` methods.
+- **exports/amd**: Exclude the AMD definition.
+- **core/ready**: Exclude the ready module if you place your scripts at the end of the body. Any ready callbacks bound with `jQuery()` will simply be called immediately. However, `jQuery(document).ready()` will not be a function and `.on("ready", ...)` or similar will not be triggered.
+- **deferred**: Exclude jQuery.Deferred. This also removes jQuery.Callbacks. *Note* that modules that depend on jQuery.Deferred(AJAX, effects, core/ready) will not be removed and will still expect jQuery.Deferred to be there. Include your own jQuery.Deferred implementation or exclude those modules as well (`grunt custom:-deferred,-ajax,-effects,-core/ready`).
+
+As a special case, you may also replace Sizzle by using a special flag `grunt custom:-sizzle`.
+
+- **sizzle**: The Sizzle selector engine. When this module is excluded, it is replaced by a rudimentary selector engine based on the browser's `querySelectorAll` method that does not support jQuery selector extensions or enhanced semantics. See the selector-native.js file for details.
+
+*Note*: Excluding Sizzle will also exclude all jQuery selector extensions (such as `effects/animatedSelector` and `css/hiddenVisibleSelectors`).
+
+The build process shows a message for each dependent module it excludes or includes.
+
+To create a custom build of the latest stable version, first check out the version:
 
 ```bash
 git pull; git checkout $(git describe --abbrev=0 --tags)
 ```
 
-Then, make sure all Node dependencies are installed and all Git submodules are checked out:
+Then, make sure all Node dependencies are installed:
 
 ```bash
-npm install && grunt
+npm install
 ```
 
-To create a custom build, use the following special `grunt` commands:
+Create the custom build, use the `grunt custom` option, listing the modules to be excluded. Examples:
 
-Exclude **ajax**:
+Exclude all **ajax** functionality:
 
 ```bash
 grunt custom:-ajax
 ```
 
-Exclude **css**:
+Excluding **css** removes modules depending on CSS: **effects**, **offset**, **dimensions**.
 
 ```bash
 grunt custom:-css
 ```
 
-Exclude **deprecated**:
+Exclude a bunch of modules:
 
 ```bash
-grunt custom:-deprecated
+grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-event/alias,-offset,-wrap
 ```
 
-Exclude **dimensions**:
-
-```bash
-grunt custom:-dimensions
-```
-
-Exclude **effects**:
-
-```bash
-grunt custom:-effects
-```
-
-Exclude **offset**:
-
-```bash
-grunt custom:-offset
-```
-
-Exclude **all** optional modules:
-
-```bash
-grunt custom:-ajax,-css,-deprecated,-dimensions,-effects,-offset
-```
-
-
-Note: dependencies will be handled internally, by the build process.
-
+For questions or requests regarding custom builds, please start a thread on the [Developing jQuery Core](https://forum.jquery.com/developing-jquery-core) section of the forum. Due to the combinatorics and custom nature of these builds, they are not regularly tested in jQuery's unit test process. The non-Sizzle selector engine currently does not pass unit tests because it is missing too much essential functionality.
 
 Running the Unit Tests
 --------------------------------------
 
+Make sure you have the necessary dependencies:
 
-Start grunt to auto-build jQuery as you work:
+```bash
+bower install
+```
+
+Start `grunt watch` to auto-build jQuery as you work:
 
 ```bash
 cd jquery && grunt watch
 ```
 
 
-Run the unit tests with a local server that supports PHP. No database is required. Pre-configured php local servers are available for Windows and Mac. Here are some options:
+Run the unit tests with a local server that supports PHP. Ensure that you run the site from the root directory, not the "test" directory. No database is required. Pre-configured php local servers are available for Windows and Mac. Here are some options:
 
 - Windows: [WAMP download](http://www.wampserver.com/en/)
 - Mac: [MAMP download](http://www.mamp.info/en/index.html)
@@ -165,7 +160,7 @@ Run the unit tests with a local server that supports PHP. No database is require
 Building to a different directory
 ---------------------------------
 
-If you want to build jQuery to a directory that is different from the default location:
+To copy the built jQuery files from `/dist` to another directory:
 
 ```bash
 grunt && grunt dist:/path/to/special/location/
@@ -177,7 +172,7 @@ With this example, the output files would be:
 /path/to/special/location/jquery.min.js
 ```
 
-If you want to add a permanent copy destination, create a file in `dist/` called ".destination.json". Inside the file, paste and customize the following:
+To add a permanent copy destination, create a file in `dist/` called ".destination.json". Inside the file, paste and customize the following:
 
 ```json
 
@@ -186,76 +181,14 @@ If you want to add a permanent copy destination, create a file in `dist/` called
 }
 ```
 
-
 Additionally, both methods can be combined.
 
 
 
-Updating Submodules
--------------------
-
-Update the submodules to what is probably the latest upstream code.
-
-```bash
-grunt update_submodules
-```
-
-Note: This task will also be run any time the default `grunt` command is used.
-
-
-
-Git for dummies
----------------
+Essential Git
+-------------
 
 As the source code is handled by the version control system Git, it's useful to know some features used.
-
-### Submodules ###
-
-The repository uses submodules, which normally are handled directly by the `grunt update_submodules` command, but sometimes you want to
-be able to work with them manually.
-
-Following are the steps to manually get the submodules:
-
-```bash
-git clone https://github.com/jquery/jquery.git
-cd jquery
-git submodule init
-git submodule update
-```
-
-Or:
-
-```bash
-git clone https://github.com/jquery/jquery.git
-cd jquery
-git submodule update --init
-```
-
-Or:
-
-```bash
-git clone --recursive https://github.com/jquery/jquery.git
-cd jquery
-```
-
-If you want to work inside a submodule, it is possible, but first you need to checkout a branch:
-
-```bash
-cd src/sizzle
-git checkout master
-```
-
-After you've committed your changes to the submodule, you'll update the jquery project to point to the new commit,
-but remember to push the submodule changes before pushing the new jquery commit:
-
-```bash
-cd src/sizzle
-git push origin master
-cd ..
-git add src/sizzle
-git commit
-```
-
 
 ### cleaning ###
 
@@ -268,7 +201,7 @@ git clean -fdx
 
 ### rebasing ###
 
-For feature/topic branches, you should always used the `--rebase` flag to `git pull`, or if you are usually handling many temporary "to be in a github pull request" branches, run following to automate this:
+For feature/topic branches, you should always use the `--rebase` flag to `git pull`, or if you are usually handling many temporary "to be in a github pull request" branches, run following to automate this:
 
 ```bash
 git config branch.autosetuprebase local
@@ -285,7 +218,7 @@ Following are some commands that can be used there:
 * `Ctrl + Alt + M` - automerge as much as possible
 * `b` - jump to next merge conflict
 * `s` - change the order of the conflicted lines
-* `u` - undo an merge
+* `u` - undo a merge
 * `left mouse button` - mark a block to be the winner
 * `middle mouse button` - mark a line to be the winner
 * `Ctrl + S` - save
